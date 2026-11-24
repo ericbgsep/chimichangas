@@ -283,13 +283,14 @@
         .dish-image {
             position: relative;
             z-index: 2;
+            width: 130px;
+            height: 125px;
             max-width: 135px;
             max-height: 130px;
-            width: auto;
-            height: auto;
             object-fit: contain;
             filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.18));
             transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.35s ease;
+            display: block;
         }
 
         .dish-image-wrapper:hover .dish-image {
@@ -911,15 +912,19 @@
             .dish-image-wrapper {
                 width: 100%;
                 height: 165px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 padding: 1.2rem 1rem 0.2rem;
             }
             .dish-image-bg {
-                width: 150px;
-                height: 150px;
+                width: 140px;
+                height: 140px;
             }
             .dish-image {
-                max-width: 165px;
-                max-height: 145px;
+                width: 155px;
+                height: 140px;
+                max-width: 90%;
             }
             .dish-content {
                 padding: 1rem 1.2rem 1.3rem;
@@ -983,9 +988,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="dish-image-wrapper" onclick="openLightbox('assets/res_cutout.png', 'Chimichanga Dorada de Res', '$95.00', 'Tortilla de harina crujiente rellena de carne molida de res sazonada, queso amarillo, mozzarella derretido y cilantro fresco.')">
+                <div class="dish-image-wrapper" onclick="openLightbox('./assets/res_cutout.png', 'Chimichanga Dorada de Res', '$95.00', 'Tortilla de harina crujiente rellena de carne molida de res sazonada, queso amarillo, mozzarella derretido y cilantro fresco.')">
                     <div class="dish-image-bg"></div>
-                    <img src="assets/res_cutout.png" alt="Chimichanga Dorada de Res" class="dish-image" loading="lazy">
+                    <img src="./assets/res_cutout.png" alt="Chimichanga Dorada de Res" class="dish-image" loading="eager" decoding="async" onerror="this.onerror=null; this.src='./assets/res.jpg';">
                     <span class="zoom-hint">🔍</span>
                 </div>
             </article>
@@ -1016,9 +1021,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="dish-image-wrapper" onclick="openLightbox('assets/pollo_cutout.png', 'Chimichanga Cremosa de Pollo', '$95.00', 'Tortilla de harina crujiente rellena de pechuga de pollo cremosa con queso crema suave, mozzarella derretido y cilantro fresco.')">
+                <div class="dish-image-wrapper" onclick="openLightbox('./assets/pollo_cutout.png', 'Chimichanga Cremosa de Pollo', '$95.00', 'Tortilla de harina crujiente rellena de pechuga de pollo cremosa con queso crema suave, mozzarella derretido y cilantro fresco.')">
                     <div class="dish-image-bg"></div>
-                    <img src="assets/pollo_cutout.png" alt="Chimichanga Cremosa de Pollo" class="dish-image" loading="lazy">
+                    <img src="./assets/pollo_cutout.png" alt="Chimichanga Cremosa de Pollo" class="dish-image" loading="eager" decoding="async" onerror="this.onerror=null; this.src='./assets/pollo.jpg';">
                     <span class="zoom-hint">🔍</span>
                 </div>
             </article>
@@ -1049,9 +1054,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="dish-image-wrapper" onclick="openLightbox('assets/alambre_cutout.png', 'Chimichanga de Alambre', '$120.00', 'Tortilla de harina crujiente rellena de bistec, tocino dorado, pimiento morrón, cebolla asada y queso derretido. Incluye salsa de la casa.')">
+                <div class="dish-image-wrapper" onclick="openLightbox('./assets/alambre_cutout.png', 'Chimichanga de Alambre', '$120.00', 'Tortilla de harina crujiente rellena de bistec, tocino dorado, pimiento morrón, cebolla asada y queso derretido. Incluye salsa de la casa.')">
                     <div class="dish-image-bg"></div>
-                    <img src="assets/alambre_cutout.png" alt="Chimichanga de Alambre" class="dish-image" loading="lazy">
+                    <img src="./assets/alambre_cutout.png" alt="Chimichanga de Alambre" class="dish-image" loading="eager" decoding="async" onerror="this.onerror=null; this.src='./assets/alambre.jpg';">
                     <span class="zoom-hint">🔍</span>
                 </div>
             </article>
@@ -1081,9 +1086,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="dish-image-wrapper" onclick="openLightbox('assets/lasana_cutout.png', 'Chimichanga de Lasaña', '$90.00', 'Tortilla de harina crujiente rellena de combinación de carne de res y cerdo en salsa de tomate italiana casera con queso mozzarella derretido.')">
+                <div class="dish-image-wrapper" onclick="openLightbox('./assets/lasana_cutout.png', 'Chimichanga de Lasaña', '$90.00', 'Tortilla de harina crujiente rellena de combinación de carne de res y cerdo en salsa de tomate italiana casera con queso mozzarella derretido.')">
                     <div class="dish-image-bg"></div>
-                    <img src="assets/lasana_cutout.png" alt="Chimichanga de Lasaña" class="dish-image" loading="lazy">
+                    <img src="./assets/lasana_cutout.png" alt="Chimichanga de Lasaña" class="dish-image" loading="eager" decoding="async" onerror="this.onerror=null; this.src='./assets/lasana.jpg';">
                     <span class="zoom-hint">🔍</span>
                 </div>
             </article>
@@ -1093,7 +1098,7 @@
         <!-- PIE DE PÁGINA -->
         <footer>
             <div class="footer-mascot-wrapper">
-                <img src="assets/carritochi_cutout.png" alt="Mascota Chimichangas Yorch" class="footer-mascot">
+                <img src="./assets/carritochi_cutout.png" alt="Mascota Chimichangas Yorch" class="footer-mascot" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='./assets/carritochi_circulo_blanco.png';">
             </div>
             <p class="footer-brand"><strong>Chimichangas Yorch</strong></p>
             <p>¡El sabor auténtico y crujiente hecho al momento!</p>
