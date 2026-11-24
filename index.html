@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Interactivo - Chimichangas Yorch</title>
+    <!-- Google Fonts: tipografías inspiradas en el flyer original -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=Yellowtail&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-page: #F7F3EC;
+            --bg-card: #FFFFFF;
+            --color-green: #14422D;
+            --color-green-light: #EBF2ED;
+            --color-terracotta: #A93626;
+            --color-terracotta-light: #FCEEEB;
+            --color-gold: #D4973B;
+            --text-dark: #1F2922;
+            --text-muted: #5C6A61;
+            --border-soft: #E3DDD2;
+            --shadow-card: 0 8px 24px rgba(20, 66, 45, 0.07);
+            --shadow-hover: 0 16px 32px rgba(20, 66, 45, 0.13);
+            --radius-main: 20px;
+            --radius-btn: 50px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding-bottom: 120px; /* Espacio para barra flotante */
+            line-height: 1.5;
+        }
+
+        .wrapper {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+
+        /* HEADER */
+        header {
+            text-align: center;
+            padding: 1.5rem 0 1.2rem;
+            position: relative;
+        }
+
+        .header-title-container {
+            display: inline-block;
+            position: relative;
+            margin-bottom: 0.25rem;
+        }
+
+        .title-menu {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5.2rem;
+            line-height: 0.85;
+            letter-spacing: 3px;
+            color: var(--color-green);
+            display: block;
+            margin-bottom: -15px;
+        }
+
+        .title-sub {
+            font-family: 'Yellowtail', cursive;
+            font-size: 3.2rem;
+            color: var(--color-terracotta);
+            position: relative;
+            z-index: 2;
+            display: block;
+            transform: rotate(-3deg);
+            text-shadow: 2px 2px 0 var(--bg-page);
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--color-green);
+            color: #ffffff;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            padding: 0.35rem 1.1rem;
+            border-radius: var(--radius-btn);
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            flex-wrap: wrap;
+        }
+
+        .header-info span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* BARRA DE FILTROS Y BÚSQUEDA */
+        .filter-bar {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding: 0.5rem 0.2rem 1.2rem;
+            scrollbar-width: none;
+        }
+
+        .filter-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-chip {
+            background: #fff;
+            border: 1.5px solid var(--border-soft);
+            color: var(--text-muted);
+            padding: 0.45rem 1.1rem;
+            border-radius: var(--radius-btn);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .filter-chip.active,
+        .filter-chip:hover {
+            background: var(--color-green);
+            color: #ffffff;
+            border-color: var(--color-green);
+            box-shadow: 0 4px 12px rgba(20, 66, 45, 0.2);
+        }
+
+        /* GRID DEL MENÚ */
+        .menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.3rem;
+        }
+
+        /* TARJETA DE PLATILLO */
+        .dish-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-main);
+            box-shadow: var(--shadow-card);
+            border: 2px solid transparent;
+            overflow: hidden;
+            display: flex;
+            align-items: stretch;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            position: relative;
+        }
+
+        .dish-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Temática alternada verde / terracota según el flyer */
+        .dish-card.theme-green {
+            border-color: rgba(20, 66, 45, 0.22);
+        }
+        .dish-card.theme-green:hover {
+            border-color: var(--color-green);
+        }
+        .dish-card.theme-green .dish-title {
+            color: var(--color-green);
+        }
+        .dish-card.theme-green .tag-pill {
+            background: var(--color-green-light);
+            color: var(--color-green);
+        }
+        .dish-card.theme-green .dish-image-bg {
+            background: radial-gradient(circle, rgba(20, 66, 45, 0.12) 0%, rgba(20, 66, 45, 0.02) 70%);
+        }
+
+        .dish-card.theme-terracotta {
+            border-color: rgba(169, 54, 38, 0.25);
+        }
+        .dish-card.theme-terracotta:hover {
+            border-color: var(--color-terracotta);
+        }
+        .dish-card.theme-terracotta .dish-title {
+            color: var(--color-terracotta);
+        }
+        .dish-card.theme-terracotta .tag-pill {
+            background: var(--color-terracotta-light);
+            color: var(--color-terracotta);
+        }
+        .dish-card.theme-terracotta .dish-image-bg {
+            background: radial-gradient(circle, rgba(169, 54, 38, 0.12) 0%, rgba(169, 54, 38, 0.02) 70%);
+        }
+
+        .dish-content {
+            padding: 1.3rem 1.2rem 1.3rem 1.4rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .dish-header {
+            margin-bottom: 0.4rem;
+        }
+
+        .dish-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.7rem;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+            margin-bottom: 0.25rem;
+        }
+
+        .dish-price {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--color-terracotta);
+            margin-bottom: 0.4rem;
+        }
+
+        .dish-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+            margin-bottom: 0.85rem;
+        }
+
+        /* TAGS O ATRIBUTOS DESTACADOS */
+        .dish-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .tag-pill {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.25rem 0.65rem;
+            border-radius: var(--radius-btn);
+        }
+
+        /* IMAGEN DEL PLATILLO CON PEDESTAL Y EFECTO FLOTANTE */
+        .dish-image-wrapper {
+            width: 155px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 1rem 1rem 0;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .dish-image-bg {
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .dish-image {
+            position: relative;
+            z-index: 2;
+            max-width: 135px;
+            max-height: 130px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.18));
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.35s ease;
+        }
+
+        .dish-image-wrapper:hover .dish-image {
+            transform: scale(1.1) translateY(-4px) rotate(2deg);
+            filter: drop-shadow(0 16px 20px rgba(0, 0, 0, 0.24));
+        }
+
+        .dish-image-wrapper:hover .dish-image-bg {
+            transform: scale(1.08);
+        }
+
+        .zoom-hint {
+            position: absolute;
+            bottom: 0.8rem;
+            right: 0.8rem;
+            background: rgba(20, 66, 45, 0.8);
+            color: #fff;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            z-index: 3;
+            pointer-events: none;
+            backdrop-filter: blur(2px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: transform 0.2s ease;
+        }
+
+        .dish-image-wrapper:hover .zoom-hint {
+            transform: scale(1.15);
+        }
+
+        /* CONTROL INTERACTIVO DE CANTIDAD */
+        .dish-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 0.6rem;
+            border-top: 1px dashed var(--border-soft);
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-page);
+            padding: 0.25rem 0.4rem;
+            border-radius: var(--radius-btn);
+            border: 1px solid var(--border-soft);
+        }
+
+        .qty-btn {
+            background: #ffffff;
+            border: none;
+            color: var(--text-dark);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        .qty-btn:active {
+            transform: scale(0.9);
+        }
+
+        .qty-btn.add-main {
+            background: var(--color-green);
+            color: #ffffff;
+        }
+
+        .qty-display {
+            font-size: 0.95rem;
+            font-weight: 700;
+            min-width: 24px;
+            text-align: center;
+            color: var(--color-green);
+        }
+
+        .btn-add-simple {
+            background: var(--color-green);
+            color: #ffffff;
+            border: none;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.45rem 1.1rem;
+            border-radius: var(--radius-btn);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-add-simple:hover {
+            background: #0f3222;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(20, 66, 45, 0.25);
+        }
+
+        /* BARRA FLOTANTE INFERIOR DEL PEDIDO */
+        .order-bar {
+            position: fixed;
+            bottom: 1.2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(120%);
+            width: calc(100% - 2rem);
+            max-width: 580px;
+            background: #14422D;
+            color: #ffffff;
+            border-radius: 60px;
+            padding: 0.75rem 1.2rem 0.75rem 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 16px 36px rgba(10, 36, 24, 0.35);
+            z-index: 100;
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .order-bar.visible {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .order-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .order-count {
+            font-size: 0.82rem;
+            opacity: 0.85;
+            font-weight: 500;
+        }
+
+        .order-total {
+            font-size: 1.35rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #F8E7D1;
+        }
+
+        .btn-view-order {
+            background: #ffffff;
+            color: var(--color-green);
+            border: none;
+            padding: 0.65rem 1.4rem;
+            border-radius: var(--radius-btn);
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-view-order:hover {
+            background: #f0f0f0;
+            transform: scale(1.03);
+        }
+
+        /* MODAL / DIÁLOGO DE PEDIDO Y WHATSAPP */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 30, 20, 0.65);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-sheet {
+            background: #ffffff;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 24px;
+            padding: 1.8rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid var(--border-soft);
+            padding-bottom: 0.8rem;
+        }
+
+        .modal-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--color-green);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-close-modal {
+            background: var(--bg-page);
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+                .modal-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .btn-clear-cart {
+            background: none;
+            border: 1px solid var(--border-soft);
+            color: var(--color-terracotta);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.35rem 0.8rem;
+            border-radius: var(--radius-btn);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-clear-cart:hover {
+            background: var(--color-terracotta-light);
+            border-color: var(--color-terracotta);
+        }
+
+        .order-summary-list {
+            list-style: none;
+            margin-bottom: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            padding: 0.7rem 0;
+            border-bottom: 1px dashed var(--border-soft);
+            gap: 0.8rem;
+        }
+
+        .summary-item-info {
+            flex: 1;
+        }
+
+        .summary-item-name {
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.25;
+            margin-bottom: 0.15rem;
+        }
+
+        .summary-item-price {
+            font-size: 0.85rem;
+            color: var(--color-terracotta);
+            font-weight: 600;
+        }
+
+        .summary-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .modal-qty-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-page);
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius-btn);
+            padding: 2px 4px;
+        }
+
+        .modal-qty-btn {
+            background: #ffffff;
+            border: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+
+        .modal-qty-btn:active {
+            transform: scale(0.9);
+        }
+
+        .modal-qty-val {
+            font-size: 0.9rem;
+            font-weight: 700;
+            min-width: 22px;
+            text-align: center;
+            color: var(--color-green);
+        }
+
+        .btn-remove-item {
+            background: #FDF2F0;
+            border: 1.5px solid rgba(169, 54, 38, 0.25);
+            color: var(--color-terracotta);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-remove-item:hover {
+            background: var(--color-terracotta);
+            color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        .empty-cart-state {
+            text-align: center;
+            padding: 2.2rem 1rem;
+        }
+
+        .btn-return-menu {
+            background: var(--color-green);
+            color: #ffffff;
+            border: none;
+            padding: 0.65rem 1.4rem;
+            border-radius: var(--radius-btn);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-return-menu:hover {
+            background: #0f3222;
+        }
+
+        .summary-total-row {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--color-green);
+            margin: 1rem 0;
+            padding-top: 0.5rem;
+            border-top: 2px solid var(--color-green);
+        }
+
+        /* OPCIONES DE ENTREGA */
+        .order-type-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .order-type-btn {
+            flex: 1;
+            padding: 0.6rem;
+            border: 1.5px solid var(--border-soft);
+            background: #fff;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .order-type-btn.active {
+            border-color: var(--color-green);
+            background: var(--color-green-light);
+            color: var(--color-green);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+            color: var(--text-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            border: 1.5px solid var(--border-soft);
+            font-family: inherit;
+            font-size: 0.92rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--color-green);
+        }
+
+        .btn-whatsapp-send {
+            width: 100%;
+            background: #25D366;
+            color: #ffffff;
+            border: none;
+            padding: 0.9rem;
+            border-radius: var(--radius-btn);
+            font-weight: 700;
+            font-size: 1.05rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 6px 18px rgba(37, 211, 102, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-whatsapp-send:hover {
+            background: #1ebd5a;
+            transform: translateY(-2px);
+        }
+
+        /* MODAL DE FOTO EN TAMAÑO COMPLETO (LIGHTBOX) */
+        .lightbox-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 24, 18, 0.88);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            cursor: pointer;
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+        }
+
+        .lightbox-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 1.8rem;
+            max-width: 460px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+            cursor: default;
+            position: relative;
+            animation: zoomIn 0.25s ease;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 280px;
+            object-fit: contain;
+            filter: drop-shadow(0 12px 20px rgba(0,0,0,0.22));
+            margin-bottom: 1rem;
+        }
+
+        .lightbox-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--color-green);
+            margin-bottom: 0.4rem;
+        }
+
+        .lightbox-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-terracotta);
+            margin-bottom: 0.6rem;
+        }
+
+        .lightbox-desc {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
+        /* FOOTER CON MASCOTA */
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-soft);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-mascot-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 145px;
+            height: 145px;
+            background: #ffffff;
+            border-radius: 50%;
+            margin-bottom: 0.9rem;
+            box-shadow: 0 10px 26px rgba(20, 66, 45, 0.08);
+            border: 3px solid #ffffff;
+            position: relative;
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.35s ease;
+        }
+
+        /* Anillo decorativo sutil tipo sello artesanal */
+        .footer-mascot-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            border: 1.5px dashed rgba(20, 66, 45, 0.22);
+            pointer-events: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .footer-mascot-wrapper:hover {
+            transform: scale(1.06) translateY(-4px);
+            box-shadow: 0 16px 32px rgba(20, 66, 45, 0.14);
+        }
+
+        .footer-mascot-wrapper:hover::before {
+            border-color: var(--color-terracotta);
+        }
+
+        .footer-mascot {
+            width: 115px;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.12));
+            transition: transform 0.3s ease;
+        }
+
+        .footer-mascot-wrapper:hover .footer-mascot {
+            transform: scale(1.04);
+        }
+
+        .footer-brand {
+            font-size: 1.05rem;
+            color: var(--color-green);
+            margin-bottom: 0.2rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* ADAPTACIÓN MÓVIL */
+        @media (max-width: 520px) {
+            .title-menu {
+                font-size: 4.2rem;
+            }
+            .title-sub {
+                font-size: 2.6rem;
+            }
+            .dish-card {
+                flex-direction: column-reverse;
+                align-items: center;
+            }
+            .dish-image-wrapper {
+                width: 100%;
+                height: 165px;
+                padding: 1.2rem 1rem 0.2rem;
+            }
+            .dish-image-bg {
+                width: 150px;
+                height: 150px;
+            }
+            .dish-image {
+                max-width: 165px;
+                max-height: 145px;
+            }
+            .dish-content {
+                padding: 1rem 1.2rem 1.3rem;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+
+        <!-- ENCABEZADO ESTILO FLYER ORIGINAL -->
+        <header>
+            <div class="header-title-container">
+                <span class="title-menu">MENU</span>
+                <span class="title-sub">chimichangas</span>
+            </div>
+            <div>
+                <span class="brand-badge">Chimichangas Yorch</span>
+            </div>
+            <div class="header-info">
+                <span>🔥 100% Caseras y Crujientes</span>
+            </div>
+        </header>
+
+        <!-- FILTROS INTERACTIVOS -->
+        <nav class="filter-bar" aria-label="Filtros del menú">
+            <button class="filter-chip active" data-filter="all">Todas</button>
+            <button class="filter-chip" data-filter="res">Res</button>
+            <button class="filter-chip" data-filter="pollo">Pollo</button>
+            <button class="filter-chip" data-filter="especiales">Especiales</button>
+        </nav>
+
+        <!-- LISTA DE CHIMICHANGAS (MENÚ INTERACTIVO) -->
+        <main class="menu-list" id="menuList">
+
+            <!-- 1. DORADA DE RES -->
+            <article class="dish-card theme-green" data-category="res" data-id="res" data-name="Chimichanga Dorada de Res" data-price="95">
+                <div class="dish-content">
+                    <div class="dish-header">
+                        <h2 class="dish-title">Chimichanga Dorada de Res</h2>
+                        <div class="dish-price">$95.00</div>
+                    </div>
+                    <p class="dish-desc">Tortilla de harina crujiente rellena de carne molida de res sazonada, queso amarillo, mozzarella derretido y cilantro fresco.</p>
+                    
+                    <div class="dish-tags">
+                        <span class="tag-pill">Crujiente</span>
+                        <span class="tag-pill">Queso Derretido</span>
+                        <span class="tag-pill">Cilantro</span>
+                    </div>
+
+                    <div class="dish-actions">
+                        <button class="btn-add-simple" onclick="addToCart('res')">
+                            <span>+ Agregar</span>
+                        </button>
+                        <div class="qty-controls" id="qtyBox-res" style="display: none;">
+                            <button class="qty-btn" onclick="updateQty('res', -1)" aria-label="Quitar uno">−</button>
+                            <span class="qty-display" id="qty-res">0</span>
+                            <button class="qty-btn add-main" onclick="updateQty('res', 1)" aria-label="Agregar uno">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="dish-image-wrapper" onclick="openLightbox('assets/res_cutout.png', 'Chimichanga Dorada de Res', '$95.00', 'Tortilla de harina crujiente rellena de carne molida de res sazonada, queso amarillo, mozzarella derretido y cilantro fresco.')">
+                    <div class="dish-image-bg"></div>
+                    <img src="assets/res_cutout.png" alt="Chimichanga Dorada de Res" class="dish-image" loading="lazy">
+                    <span class="zoom-hint">🔍</span>
+                </div>
+            </article>
+
+            <!-- 2. CREMOSA DE POLLO -->
+            <article class="dish-card theme-terracotta" data-category="pollo" data-id="pollo" data-name="Chimichanga Cremosa de Pollo" data-price="95">
+                <div class="dish-content">
+                    <div class="dish-header">
+                        <h2 class="dish-title">Chimichanga Cremosa de Pollo</h2>
+                        <div class="dish-price">$95.00</div>
+                    </div>
+                    <p class="dish-desc">Tortilla de harina crujiente rellena de pechuga de pollo cremosa con queso crema suave, mozzarella derretido y cilantro fresco.</p>
+                    
+                    <div class="dish-tags">
+                        <span class="tag-pill">Cremosa</span>
+                        <span class="tag-pill">Queso Crema</span>
+                        <span class="tag-pill">Cilantro</span>
+                    </div>
+
+                    <div class="dish-actions">
+                        <button class="btn-add-simple" onclick="addToCart('pollo')">
+                            <span>+ Agregar</span>
+                        </button>
+                        <div class="qty-controls" id="qtyBox-pollo" style="display: none;">
+                            <button class="qty-btn" onclick="updateQty('pollo', -1)" aria-label="Quitar uno">−</button>
+                            <span class="qty-display" id="qty-pollo">0</span>
+                            <button class="qty-btn add-main" onclick="updateQty('pollo', 1)" aria-label="Agregar uno">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="dish-image-wrapper" onclick="openLightbox('assets/pollo_cutout.png', 'Chimichanga Cremosa de Pollo', '$95.00', 'Tortilla de harina crujiente rellena de pechuga de pollo cremosa con queso crema suave, mozzarella derretido y cilantro fresco.')">
+                    <div class="dish-image-bg"></div>
+                    <img src="assets/pollo_cutout.png" alt="Chimichanga Cremosa de Pollo" class="dish-image" loading="lazy">
+                    <span class="zoom-hint">🔍</span>
+                </div>
+            </article>
+
+            <!-- 3. DE ALAMBRE -->
+            <article class="dish-card theme-green" data-category="especiales res" data-id="alambre" data-name="Chimichanga de Alambre" data-price="120">
+                <div class="dish-content">
+                    <div class="dish-header">
+                        <h2 class="dish-title">Chimichanga de Alambre</h2>
+                        <div class="dish-price">$120.00</div>
+                    </div>
+                    <p class="dish-desc">Tortilla de harina crujiente rellena de bistec, tocino dorado, pimiento morrón, cebolla asada y queso derretido. Incluye bolsita de salsa de la casa.</p>
+                    
+                    <div class="dish-tags">
+                        <span class="tag-pill">Bistec</span>
+                        <span class="tag-pill">Tocino</span>
+                        <span class="tag-pill">Pimiento</span>
+                    </div>
+
+                    <div class="dish-actions">
+                        <button class="btn-add-simple" onclick="addToCart('alambre')">
+                            <span>+ Agregar</span>
+                        </button>
+                        <div class="qty-controls" id="qtyBox-alambre" style="display: none;">
+                            <button class="qty-btn" onclick="updateQty('alambre', -1)" aria-label="Quitar uno">−</button>
+                            <span class="qty-display" id="qty-alambre">0</span>
+                            <button class="qty-btn add-main" onclick="updateQty('alambre', 1)" aria-label="Agregar uno">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="dish-image-wrapper" onclick="openLightbox('assets/alambre_cutout.png', 'Chimichanga de Alambre', '$120.00', 'Tortilla de harina crujiente rellena de bistec, tocino dorado, pimiento morrón, cebolla asada y queso derretido. Incluye salsa de la casa.')">
+                    <div class="dish-image-bg"></div>
+                    <img src="assets/alambre_cutout.png" alt="Chimichanga de Alambre" class="dish-image" loading="lazy">
+                    <span class="zoom-hint">🔍</span>
+                </div>
+            </article>
+
+            <!-- 4. DE LASAÑA -->
+            <article class="dish-card theme-terracotta" data-category="especiales res" data-id="lasana" data-name="Chimichanga de Lasaña" data-price="90">
+                <div class="dish-content">
+                    <div class="dish-header">
+                        <h2 class="dish-title">Chimichanga de Lasaña</h2>
+                        <div class="dish-price">$90.00</div>
+                    </div>
+                    <p class="dish-desc">Tortilla de harina crujiente rellena de combinación de carne de res y cerdo en salsa de tomate italiana casera con queso mozzarella derretido.</p>
+                    
+                    <div class="dish-tags">
+                        <span class="tag-pill">Salsa de Tomate</span>
+                        <span class="tag-pill">Queso Derretido</span>
+                    </div>
+
+                    <div class="dish-actions">
+                        <button class="btn-add-simple" onclick="addToCart('lasana')">
+                            <span>+ Agregar</span>
+                        </button>
+                        <div class="qty-controls" id="qtyBox-lasana" style="display: none;">
+                            <button class="qty-btn" onclick="updateQty('lasana', -1)" aria-label="Quitar uno">−</button>
+                            <span class="qty-display" id="qty-lasana">0</span>
+                            <button class="qty-btn add-main" onclick="updateQty('lasana', 1)" aria-label="Agregar uno">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="dish-image-wrapper" onclick="openLightbox('assets/lasana_cutout.png', 'Chimichanga de Lasaña', '$90.00', 'Tortilla de harina crujiente rellena de combinación de carne de res y cerdo en salsa de tomate italiana casera con queso mozzarella derretido.')">
+                    <div class="dish-image-bg"></div>
+                    <img src="assets/lasana_cutout.png" alt="Chimichanga de Lasaña" class="dish-image" loading="lazy">
+                    <span class="zoom-hint">🔍</span>
+                </div>
+            </article>
+
+        </main>
+
+        <!-- PIE DE PÁGINA -->
+        <footer>
+            <div class="footer-mascot-wrapper">
+                <img src="assets/carritochi_cutout.png" alt="Mascota Chimichangas Yorch" class="footer-mascot">
+            </div>
+            <p class="footer-brand"><strong>Chimichangas Yorch</strong></p>
+            <p>¡El sabor auténtico y crujiente hecho al momento!</p>
+        </footer>
+
+    </div>
+
+    <!-- BARRA FLOTANTE CON RESUMEN DEL PEDIDO -->
+    <aside class="order-bar" id="orderBar">
+        <div class="order-info">
+            <span class="order-count" id="orderCountLabel">0 artículos</span>
+            <span class="order-total" id="orderTotalLabel">$0.00</span>
+        </div>
+        <button class="btn-view-order" onclick="openOrderModal()">
+            <span>Ver Pedido</span>
+            <span>🛒</span>
+        </button>
+    </aside>
+
+    <!-- MODAL DE PEDIDO Y WHATSAPP -->
+    <div class="modal-overlay" id="orderModal" onclick="closeOrderModal(event)">
+        <div class="modal-sheet" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 class="modal-title">Tu Pedido</h3>
+                <div class="modal-header-actions">
+                    <button type="button" class="btn-clear-cart" id="btnClearCart" onclick="clearCart()">🗑️ Vaciar</button>
+                    <button type="button" class="btn-close-modal" onclick="closeOrderModal()">✕</button>
+                </div>
+            </div>
+
+            <div id="modalCartContent">
+                <ul class="order-summary-list" id="modalItemsList">
+                    <!-- Se llena dinámicamente con JS -->
+                </ul>
+
+                <div class="summary-total-row">
+                    <span>Total a pagar:</span>
+                    <span id="modalTotalLabel">$0.00</span>
+                </div>
+
+                <!-- Tipo de entrega -->
+                <label class="form-label">Tipo de servicio:</label>
+                <div class="order-type-tabs">
+                    <button type="button" class="order-type-btn active" onclick="setServiceType('recoger', this)">🛍️ Recoger</button>
+                    <button type="button" class="order-type-btn" onclick="setServiceType('domicilio', this)">🛵 Domicilio</button>
+                </div>
+
+                <!-- Campos según el servicio -->
+                <div class="form-group" id="fieldNombre">
+                    <label class="form-label">Nombre para tu pedido (opcional):</label>
+                    <input type="text" id="inputNombre" class="form-input" placeholder="Ej. Juan Pérez">
+                </div>
+
+                <div class="form-group" id="fieldDireccion" style="display: none;">
+                    <label class="form-label">Calle, número y colonia:</label>
+                    <input type="text" id="inputDireccion" class="form-input" placeholder="Ej. Calle Morelos #45, Col. Centro" style="margin-bottom: 0.65rem;">
+                    
+                    <label class="form-label">Referencias para ubicarla (color de fachada, portón, negocio al lado):</label>
+                    <input type="text" id="inputReferencias" class="form-input" placeholder="Ej. Casa blanca, portón café, junto a la tienda">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Notas o especificaciones:</label>
+                    <input type="text" id="inputNotas" class="form-input" placeholder="Ej. Sin cilantro, salsa aparte...">
+                </div>
+
+                <!-- Botón WhatsApp -->
+                <button type="button" class="btn-whatsapp-send" onclick="sendOrderToWhatsApp()">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.303-.058.116-.087.188-.173.289l-.26.303c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.173.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086.159.058 1.011.477 1.184.564.173.087.289.13.332.202.043.073.043.419-.101.824z"/>
+                    </svg>
+                    <span>Enviar Pedido a WhatsApp</span>
+                </button>
+            </div>
+
+            <!-- Estado cuando está vacío -->
+            <div id="modalEmptyState" style="display: none;" class="empty-cart-state">
+                <span style="font-size: 2.8rem; display: block; margin-bottom: 0.5rem;">🌮</span>
+                <p style="font-weight: 700; font-size: 1.15rem; color: var(--color-green); margin-bottom: 0.3rem;">Tu carrito está vacío</p>
+                <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.4rem;">Agrega deliciosas chimichangas para armar tu pedido.</p>
+                <button type="button" class="btn-return-menu" onclick="closeOrderModal()">+ Explorar el Menú</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX PARA FOTOS -->
+    <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox(event)">
+        <div class="lightbox-card" onclick="event.stopPropagation()">
+            <img src="" alt="Platillo" class="lightbox-img" id="lightboxImg">
+            <h3 class="lightbox-title" id="lightboxTitle">Chimichanga</h3>
+            <div class="lightbox-price" id="lightboxPrice">$0.00</div>
+            <p class="lightbox-desc" id="lightboxDesc"></p>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN DEL NEGOCIO
+        // WhatsApp oficial de Chimichangas Yorch (+52 1 220 634 2397)
+        const BUSINESS_WHATSAPP = "5212206342397"; 
+
+        // BASE DE DATOS DE PRODUCTOS
+        const PRODUCTS = {
+            res: { name: "Chimichanga Dorada de Res", price: 95 },
+            pollo: { name: "Chimichanga Cremosa de Pollo", price: 95 },
+            alambre: { name: "Chimichanga de Alambre", price: 120 },
+            lasana: { name: "Chimichanga de Lasaña", price: 90 }
+        };
+
+        // ESTADO DEL CARRITO
+        const cart = {
+            res: 0,
+            pollo: 0,
+            alambre: 0,
+            lasana: 0
+        };
+
+        let currentServiceType = 'recoger';
+
+        // 1. GESTIÓN DEL CARRITO
+        function addToCart(id) {
+            cart[id] = 1;
+            renderItemControls(id);
+            updateCartSummary();
+        }
+
+        function updateQty(id, delta) {
+            cart[id] = Math.max(0, cart[id] + delta);
+            renderItemControls(id);
+            updateCartSummary();
+        }
+
+        function renderItemControls(id) {
+            const qtyBox = document.getElementById(`qtyBox-${id}`);
+            const qtyLabel = document.getElementById(`qty-${id}`);
+            const addBtn = qtyBox.previousElementSibling;
+
+            if (cart[id] > 0) {
+                addBtn.style.display = 'none';
+                qtyBox.style.display = 'flex';
+                qtyLabel.textContent = cart[id];
+            } else {
+                addBtn.style.display = 'flex';
+                qtyBox.style.display = 'none';
+                qtyLabel.textContent = 0;
+            }
+        }
+
+        function updateCartSummary() {
+            let totalItems = 0;
+            let totalPrice = 0;
+
+            for (const id in cart) {
+                const qty = cart[id];
+                if (qty > 0) {
+                    totalItems += qty;
+                    totalPrice += qty * PRODUCTS[id].price;
+                }
+            }
+
+            const orderBar = document.getElementById('orderBar');
+            const countLabel = document.getElementById('orderCountLabel');
+            const totalLabel = document.getElementById('orderTotalLabel');
+
+            if (totalItems > 0) {
+                countLabel.textContent = `${totalItems} ${totalItems === 1 ? 'chimichanga' : 'chimichangas'}`;
+                totalLabel.textContent = `$${totalPrice.toFixed(2)}`;
+                orderBar.classList.add('visible');
+            } else {
+                orderBar.classList.remove('visible');
+            }
+        }
+
+        // 2. FILTRADO POR CATEGORÍAS
+        const filterChips = document.querySelectorAll('.filter-chip');
+        const dishCards = document.querySelectorAll('.dish-card');
+
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                filterChips.forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+
+                const filter = chip.getAttribute('data-filter');
+
+                dishCards.forEach(card => {
+                    const categories = card.getAttribute('data-category').split(' ');
+                    if (filter === 'all' || categories.includes(filter)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // 3. MODAL DE RESUMEN Y GESTIÓN DEL CARRITO
+        function renderOrderModalContent() {
+            const listContainer = document.getElementById('modalItemsList');
+            const cartContent = document.getElementById('modalCartContent');
+            const emptyState = document.getElementById('modalEmptyState');
+            const btnClear = document.getElementById('btnClearCart');
+            listContainer.innerHTML = '';
+
+            let totalPrice = 0;
+            let totalItems = 0;
+
+            for (const id in cart) {
+                const qty = cart[id];
+                if (qty > 0) {
+                    totalItems += qty;
+                    const prod = PRODUCTS[id];
+                    const subtotal = qty * prod.price;
+                    totalPrice += subtotal;
+
+                    const li = document.createElement('li');
+                    li.className = 'summary-item';
+                    li.innerHTML = `
+                        <div class="summary-item-info">
+                            <div class="summary-item-name">${prod.name}</div>
+                            <div class="summary-item-price">$${subtotal.toFixed(2)} ($${prod.price} c/u)</div>
+                        </div>
+                        <div class="summary-item-controls">
+                            <div class="modal-qty-box">
+                                <button type="button" class="modal-qty-btn" onclick="updateQtyFromModal('${id}', -1)" aria-label="Disminuir">−</button>
+                                <span class="modal-qty-val">${qty}</span>
+                                <button type="button" class="modal-qty-btn" onclick="updateQtyFromModal('${id}', 1)" aria-label="Aumentar">+</button>
+                            </div>
+                            <button type="button" class="btn-remove-item" onclick="removeFromCart('${id}')" title="Quitar este producto" aria-label="Eliminar producto">✕</button>
+                        </div>
+                    `;
+                    listContainer.appendChild(li);
+                }
+            }
+
+            if (totalItems > 0) {
+                cartContent.style.display = 'block';
+                emptyState.style.display = 'none';
+                btnClear.style.display = 'inline-block';
+                document.getElementById('modalTotalLabel').textContent = `$${totalPrice.toFixed(2)}`;
+            } else {
+                cartContent.style.display = 'none';
+                emptyState.style.display = 'block';
+                btnClear.style.display = 'none';
+            }
+        }
+
+        function openOrderModal() {
+            renderOrderModalContent();
+            document.getElementById('orderModal').classList.add('active');
+        }
+
+        function closeOrderModal(e) {
+            if (!e || e.target.id === 'orderModal' || e.target.classList.contains('btn-close-modal') || e.target.classList.contains('btn-return-menu')) {
+                document.getElementById('orderModal').classList.remove('active');
+            }
+        }
+
+        function updateQtyFromModal(id, delta) {
+            updateQty(id, delta);
+            renderOrderModalContent();
+        }
+
+        function removeFromCart(id) {
+            cart[id] = 0;
+            renderItemControls(id);
+            updateCartSummary();
+            renderOrderModalContent();
+        }
+
+        function clearCart() {
+            for (const id in cart) {
+                cart[id] = 0;
+                renderItemControls(id);
+            }
+            updateCartSummary();
+            renderOrderModalContent();
+        }
+
+        function setServiceType(type, btnElement) {
+            currentServiceType = type;
+            document.querySelectorAll('.order-type-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            const fieldDireccion = document.getElementById('fieldDireccion');
+
+            if (type === 'domicilio') {
+                fieldDireccion.style.display = 'block';
+            } else { // Recoger
+                fieldDireccion.style.display = 'none';
+            }
+        }
+
+        // 4. ENVIAR A WHATSAPP
+        function sendOrderToWhatsApp() {
+            let itemsText = "";
+            let totalPrice = 0;
+
+            for (const id in cart) {
+                const qty = cart[id];
+                if (qty > 0) {
+                    const prod = PRODUCTS[id];
+                    const subtotal = qty * prod.price;
+                    totalPrice += subtotal;
+                    itemsText += `• ${qty}x ${prod.name} ($${subtotal.toFixed(2)})\n`;
+                }
+            }
+
+            if (!itemsText) {
+                alert("Tu carrito está vacío. Agrega una chimichanga.");
+                return;
+            }
+
+            let serviceLabel = "Recoger en local";
+            let serviceDetail = "";
+
+            const nombre = document.getElementById('inputNombre').value.trim();
+            if (nombre) serviceDetail += `Cliente: ${nombre}\n`;
+
+            if (currentServiceType === 'domicilio') {
+                serviceLabel = "Pedido a Domicilio";
+                const dir = document.getElementById('inputDireccion').value.trim();
+                const ref = document.getElementById('inputReferencias').value.trim();
+                if (dir) {
+                    serviceDetail += `📍 Dirección: ${dir}\n`;
+                    if (ref) {
+                        serviceDetail += `🏠 Referencias: ${ref}\n`;
+                    }
+                } else {
+                    alert("Por favor escribe tu calle, número y colonia para el envío a domicilio.");
+                    return;
+                }
+            } else {
+                serviceLabel = "Recoger en el local";
+            }
+
+            const notas = document.getElementById('inputNotas').value.trim();
+            const notasText = notas ? `Notas adicionales: ${notas}\n` : "";
+
+            const message = 
+`🌮 *¡HOLA! QUIERO HACER UN PEDIDO EN CHIMICHANGAS YORCH* 🌮
+------------------------------------------
+*Detalle del Pedido:*
+${itemsText}
+------------------------------------------
+💰 *Total: $${totalPrice.toFixed(2)} MXN*
+🛵 *Modalidad:* ${serviceLabel}
+${serviceDetail}${notasText}
+¡Muchas gracias!`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // 5. LIGHTBOX DE IMÁGENES
+        function openLightbox(src, title, price, desc) {
+            const lightbox = document.getElementById('lightboxModal');
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightboxTitle').textContent = title;
+            document.getElementById('lightboxPrice').textContent = price;
+            document.getElementById('lightboxDesc').textContent = desc;
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox(e) {
+            if (!e || e.target.id === 'lightboxModal') {
+                document.getElementById('lightboxModal').classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
