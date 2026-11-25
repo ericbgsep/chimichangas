@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú Interactivo - Chimichangas Yorch</title>
+    <meta name="description" content="Conoce el menú de Chimichangas Yorch, haz tu pedido por WhatsApp y elige recoger en el local o recibirlo a domicilio en Zumpango del Río.">
     <!-- Google Fonts: tipografías inspiradas en el flyer original -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -285,6 +286,7 @@
 
         /* IMAGEN DEL PLATILLO CON PEDESTAL Y EFECTO FLOTANTE */
         .dish-image-wrapper {
+            appearance: none;
             width: 155px;
             position: relative;
             display: flex;
@@ -293,6 +295,17 @@
             padding: 1rem 1rem 1rem 0;
             flex-shrink: 0;
             cursor: pointer;
+            border: 0;
+            background: transparent;
+            color: inherit;
+            font: inherit;
+            text-align: center;
+        }
+
+        .dish-image-wrapper:focus-visible {
+            outline: 3px solid var(--color-gold);
+            outline-offset: -3px;
+            border-radius: var(--radius-main);
         }
 
         .dish-image-bg {
@@ -460,6 +473,14 @@
             font-size: 0.82rem;
             opacity: 0.85;
             font-weight: 500;
+        }
+
+        .order-subtotal-label {
+            font-size: 0.72rem;
+            opacity: 0.85;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.35px;
         }
 
         .order-total {
@@ -874,6 +895,25 @@
             animation: zoomIn 0.25s ease;
         }
 
+        .lightbox-close {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 36px;
+            height: 36px;
+            border: 0;
+            border-radius: 50%;
+            background: var(--bg-page);
+            color: var(--text-dark);
+            font-size: 1.15rem;
+            cursor: pointer;
+        }
+
+        .lightbox-close:focus-visible {
+            outline: 3px solid var(--color-gold);
+            outline-offset: 2px;
+        }
+
         @keyframes zoomIn {
             from { transform: scale(0.9); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
@@ -1064,11 +1104,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="dish-image-wrapper" onclick="openLightbox('./assets/res_cutout.png', 'Chimichanga Dorada de Res', '$95.00', 'Tortilla de harina crujiente rellena de carne molida de res sazonada, queso amarillo, mozzarella derretido y cilantro fresco.')">
-                    <div class="dish-image-bg"></div>
+                <button type="button" class="dish-image-wrapper" aria-label="Ampliar foto de Chimichanga Dorada de Res" onclick="openLightbox('./assets/res_cutout.png', 'Chimichanga Dorada de Res', '$95.00', 'Tortilla de harina crujiente rellena de carne molida de res sazonada, queso amarillo, mozzarella derretido y cilantro fresco.', this)">
+                    <span class="dish-image-bg"></span>
                     <img src="./assets/res_cutout.png" alt="Chimichanga Dorada de Res" class="dish-image" loading="eager" decoding="async" onerror="this.onerror=null; this.src='./assets/res.jpg';">
                     <span class="zoom-hint">🔍</span>
-                </div>
+                </button>
             </article>
 
             <!-- 2. CREMOSA DE POLLO -->
@@ -1097,11 +1137,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="dish-image-wrapper" onclick="openLightbox('./assets/pollo_cutout.png', 'Chimichanga Cremosa de Pollo', '$95.00', 'Tortilla de harina crujiente rellena de pechuga de pollo cremosa con queso crema suave, mozzarella derretido y cilantro fresco.')">
-                    <div class="dish-image-bg"></div>
+                <button type="button" class="dish-image-wrapper" aria-label="Ampliar foto de Chimichanga Cremosa de Pollo" onclick="openLightbox('./assets/pollo_cutout.png', 'Chimichanga Cremosa de Pollo', '$95.00', 'Tortilla de harina crujiente rellena de pechuga de pollo cremosa con queso crema suave, mozzarella derretido y cilantro fresco.', this)">
+                    <span class="dish-image-bg"></span>
                     <img src="./assets/pollo_cutout.png" alt="Chimichanga Cremosa de Pollo" class="dish-image" loading="eager" decoding="async" onerror="this.onerror=null; this.src='./assets/pollo.jpg';">
                     <span class="zoom-hint">🔍</span>
-                </div>
+                </button>
             </article>
 
             <!-- 3. DE ALAMBRE -->
@@ -1130,11 +1170,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="dish-image-wrapper" onclick="openLightbox('./assets/alambre_cutout.png', 'Chimichanga de Alambre', '$120.00', 'Tortilla de harina crujiente rellena de bistec, tocino dorado, pimiento morrón, cebolla asada y queso derretido. Incluye salsa de la casa.')">
-                    <div class="dish-image-bg"></div>
+                <button type="button" class="dish-image-wrapper" aria-label="Ampliar foto de Chimichanga de Alambre" onclick="openLightbox('./assets/alambre_cutout.png', 'Chimichanga de Alambre', '$120.00', 'Tortilla de harina crujiente rellena de bistec, tocino dorado, pimiento morrón, cebolla asada y queso derretido. Incluye salsa de la casa.', this)">
+                    <span class="dish-image-bg"></span>
                     <img src="./assets/alambre_cutout.png" alt="Chimichanga de Alambre" class="dish-image" loading="eager" decoding="async" onerror="this.onerror=null; this.src='./assets/alambre.jpg';">
                     <span class="zoom-hint">🔍</span>
-                </div>
+                </button>
             </article>
 
             <!-- 4. DE LASAÑA -->
@@ -1163,11 +1203,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="dish-image-wrapper" onclick="openLightbox('./assets/lasana_cutout.png', 'Chimichanga de Lasaña', '$90.00', 'Tortilla de harina crujiente rellena de combinación de carne de res y cerdo en salsa de tomate italiana casera con queso mozzarella derretido.')">
-                    <div class="dish-image-bg"></div>
+                <button type="button" class="dish-image-wrapper" aria-label="Ampliar foto de Chimichanga de Lasaña" onclick="openLightbox('./assets/lasana_cutout.png', 'Chimichanga de Lasaña', '$90.00', 'Tortilla de harina crujiente rellena de combinación de carne de res y cerdo en salsa de tomate italiana casera con queso mozzarella derretido.', this)">
+                    <span class="dish-image-bg"></span>
                     <img src="./assets/lasana_cutout.png" alt="Chimichanga de Lasaña" class="dish-image" loading="eager" decoding="async" onerror="this.onerror=null; this.src='./assets/lasana.jpg';">
                     <span class="zoom-hint">🔍</span>
-                </div>
+                </button>
             </article>
 
         </main>
@@ -1187,6 +1227,7 @@
     <aside class="order-bar" id="orderBar">
         <div class="order-info">
             <span class="order-count" id="orderCountLabel">0 artículos</span>
+            <span class="order-subtotal-label">Subtotal de productos</span>
             <span class="order-total" id="orderTotalLabel">$0.00</span>
         </div>
         <button class="btn-view-order" onclick="openOrderModal()">
@@ -1283,8 +1324,9 @@
     </div>
 
     <!-- LIGHTBOX PARA FOTOS -->
-    <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox(event)">
+    <div class="lightbox-modal" id="lightboxModal" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle" onclick="closeLightbox(event)">
         <div class="lightbox-card" onclick="event.stopPropagation()">
+            <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Cerrar foto ampliada" onclick="closeLightbox()">✕</button>
             <img src="" alt="Platillo" class="lightbox-img" id="lightboxImg">
             <h3 class="lightbox-title" id="lightboxTitle">Chimichanga</h3>
             <div class="lightbox-price" id="lightboxPrice">$0.00</div>
@@ -1637,20 +1679,31 @@ ${serviceDetail}${notasText}
         }
 
         // 5. LIGHTBOX DE IMÁGENES
-        function openLightbox(src, title, price, desc) {
+        let lightboxTrigger = null;
+
+        function openLightbox(src, title, price, desc, trigger) {
             const lightbox = document.getElementById('lightboxModal');
+            lightboxTrigger = trigger;
             document.getElementById('lightboxImg').src = src;
             document.getElementById('lightboxTitle').textContent = title;
             document.getElementById('lightboxPrice').textContent = price;
             document.getElementById('lightboxDesc').textContent = desc;
             lightbox.classList.add('active');
+            document.getElementById('lightboxClose').focus();
         }
 
         function closeLightbox(e) {
             if (!e || e.target.id === 'lightboxModal') {
                 document.getElementById('lightboxModal').classList.remove('active');
+                if (lightboxTrigger) lightboxTrigger.focus();
             }
         }
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && document.getElementById('lightboxModal').classList.contains('active')) {
+                closeLightbox();
+            }
+        });
     </script>
 </body>
 </html>
