@@ -18,7 +18,7 @@ Menú digital interactivo, minimalista y responsivo diseñado para el negocio ga
   - **🛍️ Recoger en local:** Registro rápido con nombre del cliente.
   - **🛵 Pedido a Domicilio:** Campos dedicados para *Calle, número y colonia* y *Referencias detalladas* (color de fachada, portón, negocio al lado).
 - **Generador de Mensaje a WhatsApp:** Redacta y calcula la orden lista para enviar al número del negocio (+52 1 220 634 2397).
-- **Información de servicio:** Local en Justo Sierra 22, San Francisco, Zumpango del Río, Guerrero; abierto viernes a domingo de 6:00 p. m. a 10:30 p. m. y envío a domicilio gratis.
+- **Información de servicio:** Local en Justo Sierra 22, San Francisco, Zumpango del Río, Guerrero; abierto viernes a domingo de 6:00 p. m. a 10:30 p. m. Envío a domicilio gratis a partir de 2 piezas (1 pieza: $15.00 céntrico, $35.00 a $45.00 zonas alejadas del centro).
 
 ---
 

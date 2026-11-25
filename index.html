@@ -136,11 +136,24 @@
             text-underline-offset: 2px;
         }
 
+        .service-shipping-detail {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
         .delivery-note {
-            margin: -0.75rem 0 1rem;
+            margin: -0.55rem 0 1rem;
             color: var(--color-green);
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             font-weight: 600;
+            background: var(--color-green-light);
+            padding: 0.5rem 0.75rem;
+            border-radius: 10px;
+        }
+
+        .delivery-note.is-paid {
+            color: var(--color-terracotta);
+            background: var(--color-terracotta-light);
         }
 
         /* GRID DEL MENÚ */
@@ -692,25 +705,54 @@
             background: #0f3222;
         }
 
+        .summary-shipping-row {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-top: 0.75rem;
+            padding-top: 0.65rem;
+            border-top: 1px dashed var(--border-soft);
+        }
+
+        .summary-shipping-row span:last-child {
+            color: var(--color-green);
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .summary-shipping-row.is-paid span:last-child {
+            color: var(--color-terracotta);
+        }
+
         .summary-total-row {
             display: flex;
             justify-content: space-between;
             font-weight: 800;
             font-size: 1.25rem;
             color: var(--color-green);
-            margin: 1rem 0;
+            margin: 0.75rem 0 1rem;
             padding-top: 0.5rem;
             border-top: 2px solid var(--color-green);
         }
 
         /* OPCIONES DE ENTREGA */
-        .order-type-tabs {
+        .order-type-tabs,
+        .zone-tabs {
             display: flex;
             gap: 0.5rem;
             margin-bottom: 1rem;
         }
 
-        .order-type-btn {
+        .zone-tabs {
+            margin-bottom: 0.75rem;
+        }
+
+        .order-type-btn,
+        .zone-btn {
             flex: 1;
             padding: 0.6rem;
             border: 1.5px solid var(--border-soft);
@@ -723,10 +765,32 @@
             transition: all 0.2s ease;
         }
 
-        .order-type-btn.active {
+        .zone-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.15rem;
+            padding: 0.65rem 0.5rem;
+            font-size: 0.84rem;
+        }
+
+        .zone-btn small {
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--color-terracotta);
+        }
+
+        .order-type-btn.active,
+        .zone-btn.active {
             border-color: var(--color-green);
             background: var(--color-green-light);
             color: var(--color-green);
+        }
+
+        .zone-tip {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
         }
 
         .form-group {
@@ -961,13 +1025,14 @@
             </div>
             <div class="header-info">
                 <span>🕕 Abierto viernes a domingo, 6:00 p. m. a 10:30 p. m.</span>
-                <span>🛵 Envío a domicilio gratis</span>
+                <span>🛵 Envío gratis desde 2 piezas</span>
             </div>
         </header>
 
         <section class="service-info" aria-label="Ubicación y servicio">
             <p>📍 <a href="https://www.google.com/maps/search/?api=1&query=Justo+Sierra+22%2C+San+Francisco%2C+40189+Zumpango+del+R%C3%ADo%2C+Gro." target="_blank" rel="noopener noreferrer">Justo Sierra 22, San Francisco, Zumpango del Río, Gro.</a></p>
-            <p>Recoge tu pedido en el local o pídelo a domicilio sin costo de envío.</p>
+            <p>Recoge en el local o pide a domicilio: <strong>envío gratis a partir de 2 piezas</strong>.</p>
+            <p class="service-shipping-detail">En pedidos de 1 pieza: <strong>$15.00</strong> zona céntrica · <strong>$35.00 a $45.00</strong> lejos del centro (según zona).</p>
         </section>
 
         <!-- LISTA DE CHIMICHANGAS (MENÚ INTERACTIVO) -->
@@ -1146,11 +1211,16 @@
                     <!-- Se llena dinámicamente con JS -->
                 </ul>
 
+                <div class="summary-shipping-row" id="shippingSummaryRow">
+                    <span>Envío a domicilio:</span>
+                    <span id="modalShippingLabel">¡Gratis!</span>
+                </div>
+
                 <div class="summary-total-row">
-                    <span>Total a pagar:</span>
+                    <span id="modalTotalTitle">Total a pagar:</span>
                     <span id="modalTotalLabel">$0.00</span>
                 </div>
-                <p class="delivery-note">🛵 El envío a domicilio es gratis.</p>
+                <p class="delivery-note" id="deliveryNote">🛵 Envío gratis desde 2 piezas (1 pieza: $15 céntrico · $35 a $45 zona alejada).</p>
 
                 <!-- Tipo de entrega -->
                 <label class="form-label">Tipo de servicio:</label>
@@ -1166,6 +1236,21 @@
                 </div>
 
                 <div class="form-group" id="fieldDireccion" style="display: none;">
+                    <div id="shippingZoneGroup" style="display: none;">
+                        <label class="form-label">Zona de envío (pedido de 1 pieza):</label>
+                        <p class="zone-tip">💡 Llevando 2 o más chimichangas tu envío es gratis.</p>
+                        <div class="zone-tabs">
+                            <button type="button" class="zone-btn" onclick="setDeliveryZone('centro', this)">
+                                <span>📍 Zona céntrica</span>
+                                <small>+$15.00</small>
+                            </button>
+                            <button type="button" class="zone-btn" onclick="setDeliveryZone('lejano', this)">
+                                <span>🗺️ Alejado del centro</span>
+                                <small>$35 a $45 según zona</small>
+                            </button>
+                        </div>
+                    </div>
+
                     <label class="form-label">Calle, número y colonia:</label>
                     <input type="text" id="inputDireccion" class="form-input" placeholder="Ej. Calle Morelos #45, Col. Centro" style="margin-bottom: 0.65rem;">
                     
@@ -1228,7 +1313,90 @@
             lasana: 0
         };
 
+        const FREE_SHIPPING_MIN_ITEMS = 2;
+        const CENTRAL_SHIPPING_FEE = 15;
+        const FAR_SHIPPING_MIN = 35;
+        const FAR_SHIPPING_MAX = 45;
+
         let currentServiceType = 'recoger';
+        let currentDeliveryZone = null;
+
+        function getCartTotals() {
+            let totalItems = 0;
+            let totalPrice = 0;
+            let itemsText = "";
+
+            for (const id in cart) {
+                const qty = cart[id];
+                if (qty > 0) {
+                    const prod = PRODUCTS[id];
+                    const subtotal = qty * prod.price;
+                    totalItems += qty;
+                    totalPrice += subtotal;
+                    itemsText += `• ${qty}x ${prod.name} ($${subtotal.toFixed(2)})\n`;
+                }
+            }
+
+            return { totalItems, totalPrice, itemsText };
+        }
+
+        function getShippingInfo(totalItems, totalPrice) {
+            if (currentServiceType !== 'domicilio') {
+                return {
+                    isPaid: false,
+                    shippingDisplay: '',
+                    totalTitle: 'Total a pagar:',
+                    totalDisplay: `$${totalPrice.toFixed(2)}`,
+                    whatsappTotalLine: `💰 *Total: $${totalPrice.toFixed(2)} MXN*`,
+                    whatsappShippingLine: ''
+                };
+            }
+
+            if (totalItems >= FREE_SHIPPING_MIN_ITEMS) {
+                return {
+                    isPaid: false,
+                    shippingDisplay: '¡Gratis! (2+ piezas)',
+                    totalTitle: 'Total a pagar:',
+                    totalDisplay: `$${totalPrice.toFixed(2)}`,
+                    whatsappTotalLine: `💰 *Total: $${totalPrice.toFixed(2)} MXN*`,
+                    whatsappShippingLine: '✅ Envío gratis (2 o más piezas)\n'
+                };
+            }
+
+            if (currentDeliveryZone === 'centro') {
+                const finalTotal = totalPrice + CENTRAL_SHIPPING_FEE;
+                return {
+                    isPaid: true,
+                    shippingDisplay: `+$${CENTRAL_SHIPPING_FEE.toFixed(2)} (Zona céntrica)`,
+                    totalTitle: 'Total a pagar:',
+                    totalDisplay: `$${finalTotal.toFixed(2)}`,
+                    whatsappTotalLine: `💰 *Total (incluye envío): $${finalTotal.toFixed(2)} MXN*`,
+                    whatsappShippingLine: `🛵 Envío (Zona céntrica, 1 pieza): $${CENTRAL_SHIPPING_FEE.toFixed(2)} MXN\n`
+                };
+            }
+
+            if (currentDeliveryZone === 'lejano') {
+                const minTotal = totalPrice + FAR_SHIPPING_MIN;
+                const maxTotal = totalPrice + FAR_SHIPPING_MAX;
+                return {
+                    isPaid: true,
+                    shippingDisplay: `$${FAR_SHIPPING_MIN}.00 – $${FAR_SHIPPING_MAX}.00 (según zona)`,
+                    totalTitle: 'Total estimado:',
+                    totalDisplay: `$${minTotal.toFixed(2)} – $${maxTotal.toFixed(2)}`,
+                    whatsappTotalLine: `💰 *Total estimado (incluye envío): $${minTotal.toFixed(2)} a $${maxTotal.toFixed(2)} MXN*`,
+                    whatsappShippingLine: `🛵 Envío (Zona alejada, 1 pieza): $${FAR_SHIPPING_MIN}.00 a $${FAR_SHIPPING_MAX}.00 MXN (según zona)\n`
+                };
+            }
+
+            return {
+                isPaid: true,
+                shippingDisplay: 'Elige tu zona ($15 o $35–$45)',
+                totalTitle: 'Subtotal productos:',
+                totalDisplay: `$${totalPrice.toFixed(2)} (+ envío)`,
+                whatsappTotalLine: '',
+                whatsappShippingLine: ''
+            };
+        }
 
         // 1. GESTIÓN DEL CARRITO
         function addToCart(id) {
@@ -1260,17 +1428,7 @@
         }
 
         function updateCartSummary() {
-            let totalItems = 0;
-            let totalPrice = 0;
-
-            for (const id in cart) {
-                const qty = cart[id];
-                if (qty > 0) {
-                    totalItems += qty;
-                    totalPrice += qty * PRODUCTS[id].price;
-                }
-            }
-
+            const { totalItems, totalPrice } = getCartTotals();
             const orderBar = document.getElementById('orderBar');
             const countLabel = document.getElementById('orderCountLabel');
             const totalLabel = document.getElementById('orderTotalLabel');
@@ -1281,6 +1439,40 @@
                 orderBar.classList.add('visible');
             } else {
                 orderBar.classList.remove('visible');
+            }
+        }
+
+        function updateModalDeliveryUI(totalItems, totalPrice) {
+            const fieldDireccion = document.getElementById('fieldDireccion');
+            const zoneGroup = document.getElementById('shippingZoneGroup');
+            const shippingRow = document.getElementById('shippingSummaryRow');
+            const shippingLabel = document.getElementById('modalShippingLabel');
+            const totalTitle = document.getElementById('modalTotalTitle');
+            const totalLabel = document.getElementById('modalTotalLabel');
+            const deliveryNote = document.getElementById('deliveryNote');
+
+            const isDelivery = currentServiceType === 'domicilio';
+            const info = getShippingInfo(totalItems, totalPrice);
+
+            fieldDireccion.style.display = isDelivery ? 'block' : 'none';
+            zoneGroup.style.display = (isDelivery && totalItems > 0 && totalItems < FREE_SHIPPING_MIN_ITEMS) ? 'block' : 'none';
+            shippingRow.style.display = isDelivery ? 'flex' : 'none';
+            shippingRow.classList.toggle('is-paid', info.isPaid);
+
+            shippingLabel.textContent = info.shippingDisplay;
+            totalTitle.textContent = info.totalTitle;
+            totalLabel.textContent = info.totalDisplay;
+
+            if (totalItems >= FREE_SHIPPING_MIN_ITEMS) {
+                deliveryNote.textContent = isDelivery
+                    ? '✅ ¡Envío a domicilio gratis aplicado! (2 o más piezas).'
+                    : '🛵 Con 2 o más piezas tu envío a domicilio es gratis.';
+                deliveryNote.classList.remove('is-paid');
+            } else {
+                deliveryNote.textContent = isDelivery
+                    ? '🛵 En 1 pieza aplica costo de envío ($15 céntrico · $35 a $45 lejano). ¡Lleva 2 y es gratis!'
+                    : '🛵 Envío gratis desde 2 piezas (1 pieza: $15 céntrico · $35 a $45 zona alejada).';
+                deliveryNote.classList.toggle('is-paid', isDelivery);
             }
         }
 
@@ -1327,7 +1519,7 @@
                 cartContent.style.display = 'block';
                 emptyState.style.display = 'none';
                 btnClear.style.display = 'inline-block';
-                document.getElementById('modalTotalLabel').textContent = `$${totalPrice.toFixed(2)}`;
+                updateModalDeliveryUI(totalItems, totalPrice);
             } else {
                 cartContent.style.display = 'none';
                 emptyState.style.display = 'block';
@@ -1363,6 +1555,8 @@
                 cart[id] = 0;
                 renderItemControls(id);
             }
+            currentDeliveryZone = null;
+            document.querySelectorAll('.zone-btn').forEach(btn => btn.classList.remove('active'));
             updateCartSummary();
             renderOrderModalContent();
         }
@@ -1372,36 +1566,29 @@
             document.querySelectorAll('.order-type-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
 
-            const fieldDireccion = document.getElementById('fieldDireccion');
+            const { totalItems, totalPrice } = getCartTotals();
+            updateModalDeliveryUI(totalItems, totalPrice);
+        }
 
-            if (type === 'domicilio') {
-                fieldDireccion.style.display = 'block';
-            } else { // Recoger
-                fieldDireccion.style.display = 'none';
-            }
+        function setDeliveryZone(zone, btnElement) {
+            currentDeliveryZone = zone;
+            document.querySelectorAll('.zone-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            const { totalItems, totalPrice } = getCartTotals();
+            updateModalDeliveryUI(totalItems, totalPrice);
         }
 
         // 4. ENVIAR A WHATSAPP
         function sendOrderToWhatsApp() {
-            let itemsText = "";
-            let totalPrice = 0;
-
-            for (const id in cart) {
-                const qty = cart[id];
-                if (qty > 0) {
-                    const prod = PRODUCTS[id];
-                    const subtotal = qty * prod.price;
-                    totalPrice += subtotal;
-                    itemsText += `• ${qty}x ${prod.name} ($${subtotal.toFixed(2)})\n`;
-                }
-            }
+            const { totalItems, totalPrice, itemsText } = getCartTotals();
 
             if (!itemsText) {
                 alert("Tu carrito está vacío. Agrega una chimichanga.");
                 return;
             }
 
-            let serviceLabel = "Recoger en local";
+            let serviceLabel = "Recoger en el local";
             let serviceDetail = "";
 
             const nombre = document.getElementById('inputNombre').value.trim();
@@ -1409,6 +1596,10 @@
 
             if (currentServiceType === 'domicilio') {
                 serviceLabel = "Pedido a Domicilio";
+                if (totalItems < FREE_SHIPPING_MIN_ITEMS && !currentDeliveryZone) {
+                    alert("En pedidos de 1 pieza por favor selecciona tu zona de envío (Zona céntrica $15 o Alejado del centro $35 a $45).");
+                    return;
+                }
                 const dir = document.getElementById('inputDireccion').value.trim();
                 const ref = document.getElementById('inputReferencias').value.trim();
                 if (dir) {
@@ -1420,12 +1611,14 @@
                     alert("Por favor escribe tu calle, número y colonia para el envío a domicilio.");
                     return;
                 }
-            } else {
-                serviceLabel = "Recoger en el local";
             }
 
+            const shippingInfo = getShippingInfo(totalItems, totalPrice);
             const notas = document.getElementById('inputNotas').value.trim();
             const notasText = notas ? `Notas adicionales: ${notas}\n` : "";
+            const subtotalLine = (currentServiceType === 'domicilio' && totalItems < FREE_SHIPPING_MIN_ITEMS)
+                ? `Subtotal productos: $${totalPrice.toFixed(2)} MXN\n`
+                : "";
 
             const message = 
 `🌮 *¡HOLA! QUIERO HACER UN PEDIDO EN CHIMICHANGAS YORCH* 🌮
@@ -1433,9 +1626,9 @@
 *Detalle del Pedido:*
 ${itemsText}
 ------------------------------------------
-💰 *Total: $${totalPrice.toFixed(2)} MXN*
+${subtotalLine}${shippingInfo.whatsappShippingLine}${shippingInfo.whatsappTotalLine}
 🛵 *Modalidad:* ${serviceLabel}
-${currentServiceType === 'domicilio' ? '✅ Envío gratis\n' : ''}${serviceDetail}${notasText}
+${serviceDetail}${notasText}
 ¡Muchas gracias!`;
 
             const encodedMessage = encodeURIComponent(message);
