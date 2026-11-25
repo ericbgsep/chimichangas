@@ -143,40 +143,6 @@
             font-weight: 600;
         }
 
-        /* BARRA DE FILTROS Y BÚSQUEDA */
-        .filter-bar {
-            display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            padding: 0.5rem 0.2rem 1.2rem;
-            scrollbar-width: none;
-        }
-
-        .filter-bar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .filter-chip {
-            background: #fff;
-            border: 1.5px solid var(--border-soft);
-            color: var(--text-muted);
-            padding: 0.45rem 1.1rem;
-            border-radius: var(--radius-btn);
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s ease;
-        }
-
-        .filter-chip.active,
-        .filter-chip:hover {
-            background: var(--color-green);
-            color: #ffffff;
-            border-color: var(--color-green);
-            box-shadow: 0 4px 12px rgba(20, 66, 45, 0.2);
-        }
-
         /* GRID DEL MENÚ */
         .menu-list {
             display: flex;
@@ -286,6 +252,22 @@
             letter-spacing: 0.5px;
             padding: 0.25rem 0.65rem;
             border-radius: var(--radius-btn);
+        }
+
+        .dish-recommendation {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            margin-bottom: 0.45rem;
+            padding: 0.28rem 0.65rem;
+            border-radius: 6px;
+            background: #FFF3D9;
+            color: #80520D;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.55px;
+            line-height: 1.2;
+            text-transform: uppercase;
         }
 
         /* IMAGEN DEL PLATILLO CON PEDESTAL Y EFECTO FLOTANTE */
@@ -988,14 +970,6 @@
             <p>Recoge tu pedido en el local o pídelo a domicilio sin costo de envío.</p>
         </section>
 
-        <!-- FILTROS INTERACTIVOS -->
-        <nav class="filter-bar" aria-label="Filtros del menú">
-            <button class="filter-chip active" data-filter="all">Todas</button>
-            <button class="filter-chip" data-filter="res">Res</button>
-            <button class="filter-chip" data-filter="pollo">Pollo</button>
-            <button class="filter-chip" data-filter="especiales">Especiales</button>
-        </nav>
-
         <!-- LISTA DE CHIMICHANGAS (MENÚ INTERACTIVO) -->
         <main class="menu-list" id="menuList">
 
@@ -1101,6 +1075,7 @@
             <!-- 4. DE LASAÑA -->
             <article class="dish-card theme-terracotta" data-category="especiales res" data-id="lasana" data-name="Chimichanga de Lasaña" data-price="90">
                 <div class="dish-content">
+                    <span class="dish-recommendation"><span aria-hidden="true">★</span> Recomendación de la casa</span>
                     <div class="dish-header">
                         <h2 class="dish-title">Chimichanga de Lasaña</h2>
                         <div class="dish-price">$90.00</div>
@@ -1309,29 +1284,7 @@
             }
         }
 
-        // 2. FILTRADO POR CATEGORÍAS
-        const filterChips = document.querySelectorAll('.filter-chip');
-        const dishCards = document.querySelectorAll('.dish-card');
-
-        filterChips.forEach(chip => {
-            chip.addEventListener('click', () => {
-                filterChips.forEach(c => c.classList.remove('active'));
-                chip.classList.add('active');
-
-                const filter = chip.getAttribute('data-filter');
-
-                dishCards.forEach(card => {
-                    const categories = card.getAttribute('data-category').split(' ');
-                    if (filter === 'all' || categories.includes(filter)) {
-                        card.style.display = 'flex';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
-        });
-
-        // 3. MODAL DE RESUMEN Y GESTIÓN DEL CARRITO
+        // 2. MODAL DE RESUMEN Y GESTIÓN DEL CARRITO
         function renderOrderModalContent() {
             const listContainer = document.getElementById('modalItemsList');
             const cartContent = document.getElementById('modalCartContent');

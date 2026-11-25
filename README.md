@@ -9,7 +9,7 @@ Menú digital interactivo, minimalista y responsivo diseñado para el negocio ga
 - **Diseño Mobile-First & Minimalista:** Pensado para clientes que acceden desde el QR del menú o enlaces en redes sociales.
 - **Identidad de Marca Artesanal:** Colores verde pino profundo (`#14422D`), terracota cálido (`#A93626`) y marfil suave, respetando la esencia del cartel original.
 - **Fotografías con Recorte 3D Flotante:** Imágenes transparentes de alta resolución de cada platillo con efecto interactivo al pasar el cursor o pulsar.
-- **Filtros Rápidos por Categoría:** Selector instantáneo (*Todas, Res, Pollo, Especiales*).
+- **Menú breve y directo:** Cuatro chimichangas visibles en una sola lista, con la recomendación de la casa destacada.
 - **Lightbox / Ficha de Detalle:** Vista ampliada de cada platillo con descripción de ingredientes.
 - **Carrito de Pedidos en Tiempo Real:** 
   - Cálculo automático del monto a pagar.
