@@ -115,6 +115,34 @@
             gap: 5px;
         }
 
+        .service-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            margin: 0.2rem 0 1.2rem;
+            padding: 0.9rem 1rem;
+            background: var(--color-green-light);
+            border: 1px solid rgba(20, 66, 45, 0.14);
+            border-radius: 14px;
+            color: var(--color-green);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .service-info a {
+            color: inherit;
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .delivery-note {
+            margin: -0.75rem 0 1rem;
+            color: var(--color-green);
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
         /* BARRA DE FILTROS Y BÚSQUEDA */
         .filter-bar {
             display: flex;
@@ -949,7 +977,16 @@
             <div class="header-info">
                 <span>🔥 100% Caseras y Crujientes</span>
             </div>
+            <div class="header-info">
+                <span>🕕 Abierto viernes a domingo, 6:00 p. m. a 10:30 p. m.</span>
+                <span>🛵 Envío a domicilio gratis</span>
+            </div>
         </header>
+
+        <section class="service-info" aria-label="Ubicación y servicio">
+            <p>📍 <a href="https://www.google.com/maps/search/?api=1&query=Justo+Sierra+22%2C+San+Francisco%2C+40189+Zumpango+del+R%C3%ADo%2C+Gro." target="_blank" rel="noopener noreferrer">Justo Sierra 22, San Francisco, Zumpango del Río, Gro.</a></p>
+            <p>Recoge tu pedido en el local o pídelo a domicilio sin costo de envío.</p>
+        </section>
 
         <!-- FILTROS INTERACTIVOS -->
         <nav class="filter-bar" aria-label="Filtros del menú">
@@ -1138,6 +1175,7 @@
                     <span>Total a pagar:</span>
                     <span id="modalTotalLabel">$0.00</span>
                 </div>
+                <p class="delivery-note">🛵 El envío a domicilio es gratis.</p>
 
                 <!-- Tipo de entrega -->
                 <label class="form-label">Tipo de servicio:</label>
@@ -1444,7 +1482,7 @@ ${itemsText}
 ------------------------------------------
 💰 *Total: $${totalPrice.toFixed(2)} MXN*
 🛵 *Modalidad:* ${serviceLabel}
-${serviceDetail}${notasText}
+${currentServiceType === 'domicilio' ? '✅ Envío gratis\n' : ''}${serviceDetail}${notasText}
 ¡Muchas gracias!`;
 
             const encodedMessage = encodeURIComponent(message);

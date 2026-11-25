@@ -6,7 +6,7 @@ Menú digital interactivo, minimalista y responsivo diseñado para el negocio ga
 
 ## ✨ Características Principales
 
-- **Diseño Mobile-First & Minimalista:** Pensado para comensales que acceden desde códigos QR en las mesas o enlaces en redes sociales (Instagram, Facebook, WhatsApp).
+- **Diseño Mobile-First & Minimalista:** Pensado para clientes que acceden desde el QR del menú o enlaces en redes sociales.
 - **Identidad de Marca Artesanal:** Colores verde pino profundo (`#14422D`), terracota cálido (`#A93626`) y marfil suave, respetando la esencia del cartel original.
 - **Fotografías con Recorte 3D Flotante:** Imágenes transparentes de alta resolución de cada platillo con efecto interactivo al pasar el cursor o pulsar.
 - **Filtros Rápidos por Categoría:** Selector instantáneo (*Todas, Res, Pollo, Especiales*).
@@ -18,17 +18,7 @@ Menú digital interactivo, minimalista y responsivo diseñado para el negocio ga
   - **🛍️ Recoger en local:** Registro rápido con nombre del cliente.
   - **🛵 Pedido a Domicilio:** Campos dedicados para *Calle, número y colonia* y *Referencias detalladas* (color de fachada, portón, negocio al lado).
 - **Generador de Mensaje a WhatsApp:** Redacta y calcula la orden lista para enviar al número del negocio (+52 1 220 634 2397).
-
----
-
-## 🚀 Despliegue en GitHub Pages
-
-Para publicar este menú en vivo de forma gratuita:
-1. Sube este repositorio a tu cuenta de GitHub.
-2. Ve a **Settings** > **Pages**.
-3. En la sección **Branch**, selecciona `main` y la carpeta `/ (root)`.
-4. Haz clic en **Save**. En un par de minutos tu menú estará disponible en:
-   `https://<tu-usuario>.github.io/<nombre-del-repositorio>/`
+- **Información de servicio:** Local en Justo Sierra 22, San Francisco, Zumpango del Río, Guerrero; abierto viernes a domingo de 6:00 p. m. a 10:30 p. m. y envío a domicilio gratis.
 
 ---
 
