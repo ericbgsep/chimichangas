@@ -284,6 +284,50 @@
             text-transform: uppercase;
         }
 
+        .menu-section-heading {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin: 0.7rem 0 -0.35rem;
+        }
+
+        .menu-section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 0.5px;
+            color: var(--color-green);
+        }
+
+        .menu-section-price {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--color-terracotta);
+        }
+
+        .beverage-card .dish-image-wrapper {
+            flex: 0 0 130px;
+            width: 130px;
+            height: 130px;
+            margin: 1rem 0.8rem 1rem 0;
+            padding: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            background: transparent;
+        }
+
+        .beverage-card .dish-image-bg {
+            display: none;
+        }
+
+        .beverage-card .dish-image {
+            width: 130px;
+            height: 130px;
+            max-width: 100%;
+            max-height: 100%;
+            filter: none;
+        }
+
         /* IMAGEN DEL PLATILLO CON PEDESTAL Y EFECTO FLOTANTE */
         .dish-image-wrapper {
             appearance: none;
@@ -1037,17 +1081,17 @@
             </div>
             <div class="header-info">
                 <span>🕕 Abierto viernes a domingo, 6:00 p. m. a 10:30 p. m.</span>
-                <span>🛵 Envío gratis desde 2 piezas</span>
+                <span>🛵 Envío gratis desde 2 chimichangas</span>
             </div>
         </header>
 
         <section class="service-info" aria-label="Ubicación y servicio">
             <p>📍 <a href="https://www.google.com/maps/search/?api=1&query=Justo+Sierra+22%2C+San+Francisco%2C+40189+Zumpango+del+R%C3%ADo%2C+Gro." target="_blank" rel="noopener noreferrer">Justo Sierra 22, San Francisco, Zumpango del Río, Gro.</a></p>
-            <p>Recoge en el local o pide a domicilio: <strong>envío gratis a partir de 2 piezas</strong>.</p>
-            <p class="service-shipping-detail">En pedidos de 1 pieza: <strong>$25.00</strong> en zona céntrica o <strong>$35.00 a $40.00</strong> fuera de la zona céntrica. Confirmamos el costo exacto por WhatsApp.</p>
+            <p>Recoge en el local o pide a domicilio: <strong>envío gratis a partir de 2 chimichangas</strong>.</p>
+            <p class="service-shipping-detail">Si pides menos de 2 chimichangas: <strong>$25.00</strong> en zona céntrica o <strong>$35.00 a $40.00</strong> fuera de ella. Confirmamos el costo exacto por WhatsApp.</p>
         </section>
 
-        <!-- LISTA DE CHIMICHANGAS (MENÚ INTERACTIVO) -->
+        <!-- LISTA DEL MENÚ INTERACTIVO -->
         <main class="menu-list" id="menuList">
 
             <!-- 1. DORADA DE RES -->
@@ -1182,6 +1226,14 @@
                 </button>
             </article>
 
+            <section class="beverage-section" aria-labelledby="beveragesHeading">
+                <div class="menu-section-heading">
+                    <h2 class="menu-section-title" id="beveragesHeading">Bebidas</h2>
+                    <span class="menu-section-price">Todas $25.00</span>
+                </div>
+                <div class="menu-list" id="beverageList"></div>
+            </section>
+
         </main>
 
         <!-- PIE DE PÁGINA -->
@@ -1274,7 +1326,7 @@
             <div id="modalEmptyState" style="display: none;" class="empty-cart-state">
                 <span style="font-size: 2.8rem; display: block; margin-bottom: 0.5rem;">🌮</span>
                 <p style="font-weight: 700; font-size: 1.15rem; color: var(--color-green); margin-bottom: 0.3rem;">Tu carrito está vacío</p>
-                <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.4rem;">Agrega deliciosas chimichangas para armar tu pedido.</p>
+                <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.4rem;">Agrega chimichangas y bebidas para armar tu pedido.</p>
                 <button type="button" class="btn-return-menu" onclick="closeOrderModal()">+ Explorar el Menú</button>
             </div>
         </div>
@@ -1297,11 +1349,24 @@
         const BUSINESS_WHATSAPP = "5212206342397"; 
 
         // BASE DE DATOS DE PRODUCTOS
+        const BEVERAGES = [
+            { id: 'fresca', name: 'Fresca Toronja', size: '600 ml', description: 'Refresco sabor toronja, botella de 600 ml.', image: './assets/refres1_blanco.png', alt: 'Fresca sabor toronja, botella de 600 ml' },
+            { id: 'delaware', name: 'Delaware Punch', size: '600 ml', description: 'Refresco sabor uva, botella de 600 ml.', image: './assets/refres2_blanco.png', alt: 'Delaware Punch sabor uva, botella de 600 ml' },
+            { id: 'sprite', name: 'Sprite', size: '600 ml', description: 'Refresco sabor lima-limón, botella de 600 ml.', image: './assets/refres3_blanco.png', alt: 'Sprite sabor lima-limón, botella de 600 ml' },
+            { id: 'mundet', name: 'Sidral Mundet', size: '600 ml', description: 'Refresco de manzana, botella de 600 ml.', image: './assets/refres4_blanco.png', alt: 'Sidral Mundet de manzana, botella de 600 ml' },
+            { id: 'boing', name: 'Boing! Mango', size: '500 ml', description: 'Bebida de mango, envase de 500 ml.', image: './assets/refres5_blanco.png', alt: 'Boing! bebida de mango, envase de 500 ml' }
+        ];
+
         const PRODUCTS = {
-            res: { name: "Chimichanga Dorada de Res", price: 95 },
-            pollo: { name: "Chimichanga Cremosa de Pollo", price: 95 },
-            alambre: { name: "Chimichanga de Alambre", price: 120 },
-            lasana: { name: "Chimichanga de Lasaña", price: 90 }
+            res: { name: "Chimichanga Dorada de Res", price: 95, kind: 'chimichanga' },
+            pollo: { name: "Chimichanga Cremosa de Pollo", price: 95, kind: 'chimichanga' },
+            alambre: { name: "Chimichanga de Alambre", price: 120, kind: 'chimichanga' },
+            lasana: { name: "Chimichanga de Lasaña", price: 90, kind: 'chimichanga' },
+            ...Object.fromEntries(BEVERAGES.map(beverage => [beverage.id, {
+                name: `${beverage.name} ${beverage.size}`,
+                price: 25,
+                kind: 'bebida'
+            }]))
         };
 
         // ESTADO DEL CARRITO
@@ -1309,10 +1374,50 @@
             res: 0,
             pollo: 0,
             alambre: 0,
-            lasana: 0
+            lasana: 0,
+            ...Object.fromEntries(BEVERAGES.map(beverage => [beverage.id, 0]))
         };
 
-        const FREE_SHIPPING_MIN_ITEMS = 2;
+        function renderBeverageMenu() {
+            const beverageList = document.getElementById('beverageList');
+            BEVERAGES.forEach((beverage, index) => {
+                const theme = index % 2 === 0 ? 'theme-green' : 'theme-terracotta';
+                const article = document.createElement('article');
+                article.className = `dish-card ${theme} beverage-card`;
+                article.dataset.category = 'bebidas';
+                article.dataset.id = beverage.id;
+                article.dataset.name = `${beverage.name} ${beverage.size}`;
+                article.dataset.price = '25';
+                article.innerHTML = `
+                    <div class="dish-content">
+                        <div class="dish-header">
+                            <h3 class="dish-title">${beverage.name}</h3>
+                            <div class="dish-price">$25.00</div>
+                        </div>
+                        <p class="dish-desc">${beverage.description}</p>
+                        <div class="dish-tags"><span class="tag-pill">${beverage.size}</span></div>
+                        <div class="dish-actions">
+                            <button class="btn-add-simple" onclick="addToCart('${beverage.id}')"><span>+ Agregar</span></button>
+                            <div class="qty-controls" id="qtyBox-${beverage.id}" style="display: none;">
+                                <button class="qty-btn" onclick="updateQty('${beverage.id}', -1)" aria-label="Quitar uno">−</button>
+                                <span class="qty-display" id="qty-${beverage.id}">0</span>
+                                <button class="qty-btn add-main" onclick="updateQty('${beverage.id}', 1)" aria-label="Agregar uno">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="dish-image-wrapper" aria-label="Ampliar foto de ${beverage.name}" onclick="openLightbox('${beverage.image}', '${beverage.name}', '$25.00', '${beverage.description}', this)">
+                        <span class="dish-image-bg"></span>
+                        <img src="${beverage.image}" alt="${beverage.alt}" class="dish-image" loading="lazy" decoding="async">
+                        <span class="zoom-hint">🔍</span>
+                    </button>
+                `;
+                beverageList.appendChild(article);
+            });
+        }
+
+        renderBeverageMenu();
+
+        const FREE_SHIPPING_MIN_CHIMICHANGAS = 2;
         const CENTRAL_SHIPPING_FEE = 25;
         const NONCENTRAL_SHIPPING_MIN = 35;
         const NONCENTRAL_SHIPPING_MAX = 40;
@@ -1321,6 +1426,7 @@
 
         function getCartTotals() {
             let totalItems = 0;
+            let chimichangaCount = 0;
             let totalPrice = 0;
             let itemsText = "";
 
@@ -1330,15 +1436,16 @@
                     const prod = PRODUCTS[id];
                     const subtotal = qty * prod.price;
                     totalItems += qty;
+                    if (prod.kind === 'chimichanga') chimichangaCount += qty;
                     totalPrice += subtotal;
                     itemsText += `• ${qty}x ${prod.name} ($${subtotal.toFixed(2)})\n`;
                 }
             }
 
-            return { totalItems, totalPrice, itemsText };
+            return { totalItems, chimichangaCount, totalPrice, itemsText };
         }
 
-        function getShippingInfo(totalItems, totalPrice) {
+        function getShippingInfo(chimichangaCount, totalPrice) {
             if (currentServiceType !== 'domicilio') {
                 return {
                     isPaid: false,
@@ -1350,14 +1457,14 @@
                 };
             }
 
-            if (totalItems >= FREE_SHIPPING_MIN_ITEMS) {
+            if (chimichangaCount >= FREE_SHIPPING_MIN_CHIMICHANGAS) {
                 return {
                     isPaid: false,
-                    shippingDisplay: '¡Gratis! (2+ piezas)',
+                    shippingDisplay: '¡Gratis! (2+ chimichangas)',
                     totalTitle: 'Total a pagar:',
                     totalDisplay: `$${totalPrice.toFixed(2)}`,
                     whatsappTotalLine: `💰 *Total: $${totalPrice.toFixed(2)} MXN*`,
-                    whatsappShippingLine: '✅ Envío gratis (2 o más piezas)\n'
+                    whatsappShippingLine: '✅ Envío gratis (2 o más chimichangas)\n'
                 };
             }
 
@@ -1369,7 +1476,7 @@
                 totalTitle: 'Total estimado:',
                 totalDisplay: `$${minTotal.toFixed(2)}–$${maxTotal.toFixed(2)}`,
                 whatsappTotalLine: `💰 *Total estimado (incluye envío): $${minTotal.toFixed(2)} a $${maxTotal.toFixed(2)} MXN*\n`,
-                whatsappShippingLine: `🛵 Envío para 1 pieza: $${CENTRAL_SHIPPING_FEE}.00 en zona céntrica o $${NONCENTRAL_SHIPPING_MIN}.00 a $${NONCENTRAL_SHIPPING_MAX}.00 fuera de la zona céntrica; confirmaremos el costo exacto según el domicilio.\n`
+                whatsappShippingLine: `🛵 Envío para pedidos con menos de 2 chimichangas: $${CENTRAL_SHIPPING_FEE}.00 en zona céntrica o $${NONCENTRAL_SHIPPING_MIN}.00 a $${NONCENTRAL_SHIPPING_MAX}.00 fuera de ella; confirmaremos el costo exacto según el domicilio.\n`
             };
         }
 
@@ -1409,7 +1516,7 @@
             const totalLabel = document.getElementById('orderTotalLabel');
 
             if (totalItems > 0) {
-                countLabel.textContent = `${totalItems} ${totalItems === 1 ? 'chimichanga' : 'chimichangas'}`;
+                countLabel.textContent = `${totalItems} ${totalItems === 1 ? 'producto' : 'productos'}`;
                 totalLabel.textContent = `$${totalPrice.toFixed(2)}`;
                 orderBar.classList.add('visible');
             } else {
@@ -1417,7 +1524,7 @@
             }
         }
 
-        function updateModalDeliveryUI(totalItems, totalPrice) {
+        function updateModalDeliveryUI(chimichangaCount, totalPrice) {
             const fieldDireccion = document.getElementById('fieldDireccion');
             const shippingRow = document.getElementById('shippingSummaryRow');
             const shippingLabel = document.getElementById('modalShippingLabel');
@@ -1426,7 +1533,7 @@
             const deliveryNote = document.getElementById('deliveryNote');
 
             const isDelivery = currentServiceType === 'domicilio';
-            const info = getShippingInfo(totalItems, totalPrice);
+            const info = getShippingInfo(chimichangaCount, totalPrice);
 
             fieldDireccion.style.display = isDelivery ? 'block' : 'none';
             shippingRow.style.display = isDelivery ? 'flex' : 'none';
@@ -1436,15 +1543,19 @@
             totalTitle.textContent = info.totalTitle;
             totalLabel.textContent = info.totalDisplay;
 
-            if (totalItems >= FREE_SHIPPING_MIN_ITEMS) {
+            const freeShippingUpsell = chimichangaCount === 1
+                ? 'Agrega una segunda chimichanga y el envío a domicilio será gratis.'
+                : 'Agrega 2 chimichangas y obtén envío gratis a domicilio.';
+
+            if (chimichangaCount >= FREE_SHIPPING_MIN_CHIMICHANGAS) {
                 deliveryNote.textContent = isDelivery
                     ? '🎉 ¡Envío gratis aplicado por pedir 2 o más chimichangas!'
-                    : '🛵 Agrega una segunda chimichanga y el envío a domicilio será gratis.';
+                    : '🛵 Con 2 o más chimichangas, tu envío a domicilio es gratis.';
                 deliveryNote.classList.remove('is-paid');
             } else {
                 deliveryNote.textContent = isDelivery
-                    ? `🛵 En 1 pieza: $${CENTRAL_SHIPPING_FEE} en zona céntrica o $${NONCENTRAL_SHIPPING_MIN} a $${NONCENTRAL_SHIPPING_MAX} fuera de la zona céntrica. ¡Agrega una segunda chimichanga y el envío será gratis!`
-                    : '🛵 Agrega una segunda chimichanga y el envío a domicilio será gratis.';
+                    ? `🛵 Con menos de 2 chimichangas: $${CENTRAL_SHIPPING_FEE} en zona céntrica o $${NONCENTRAL_SHIPPING_MIN} a $${NONCENTRAL_SHIPPING_MAX} fuera de la zona céntrica. ${freeShippingUpsell}`
+                    : `🛵 ${freeShippingUpsell}`;
                 deliveryNote.classList.toggle('is-paid', isDelivery);
             }
         }
@@ -1459,12 +1570,14 @@
 
             let totalPrice = 0;
             let totalItems = 0;
+            let chimichangaCount = 0;
 
             for (const id in cart) {
                 const qty = cart[id];
                 if (qty > 0) {
                     totalItems += qty;
                     const prod = PRODUCTS[id];
+                    if (prod.kind === 'chimichanga') chimichangaCount += qty;
                     const subtotal = qty * prod.price;
                     totalPrice += subtotal;
 
@@ -1492,7 +1605,7 @@
                 cartContent.style.display = 'block';
                 emptyState.style.display = 'none';
                 btnClear.style.display = 'inline-block';
-                updateModalDeliveryUI(totalItems, totalPrice);
+                updateModalDeliveryUI(chimichangaCount, totalPrice);
             } else {
                 cartContent.style.display = 'none';
                 emptyState.style.display = 'block';
@@ -1537,16 +1650,16 @@
             document.querySelectorAll('.order-type-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
 
-            const { totalItems, totalPrice } = getCartTotals();
-            updateModalDeliveryUI(totalItems, totalPrice);
+            const { chimichangaCount, totalPrice } = getCartTotals();
+            updateModalDeliveryUI(chimichangaCount, totalPrice);
         }
 
         // 4. ENVIAR A WHATSAPP
         function sendOrderToWhatsApp() {
-            const { totalItems, totalPrice, itemsText } = getCartTotals();
+            const { chimichangaCount, totalPrice, itemsText } = getCartTotals();
 
             if (!itemsText) {
-                alert("Tu carrito está vacío. Agrega una chimichanga.");
+                alert("Tu carrito está vacío. Agrega una chimichanga o bebida.");
                 return;
             }
 
@@ -1571,10 +1684,10 @@
                 }
             }
 
-            const shippingInfo = getShippingInfo(totalItems, totalPrice);
+            const shippingInfo = getShippingInfo(chimichangaCount, totalPrice);
             const notas = document.getElementById('inputNotas').value.trim();
             const notasText = notas ? `Notas adicionales: ${notas}\n` : "";
-            const subtotalLine = (currentServiceType === 'domicilio' && totalItems < FREE_SHIPPING_MIN_ITEMS)
+            const subtotalLine = (currentServiceType === 'domicilio' && chimichangaCount < FREE_SHIPPING_MIN_CHIMICHANGAS)
                 ? `Subtotal productos: $${totalPrice.toFixed(2)} MXN\n`
                 : "";
 

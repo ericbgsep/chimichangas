@@ -8,8 +8,8 @@ Menú digital interactivo, minimalista y responsivo diseñado para el negocio ga
 
 - **Diseño Mobile-First & Minimalista:** Pensado para clientes que acceden desde el QR del menú o enlaces en redes sociales.
 - **Identidad de Marca Artesanal:** Colores verde pino profundo (`#14422D`), terracota cálido (`#A93626`) y marfil suave, respetando la esencia del cartel original.
-- **Fotografías con Recorte 3D Flotante:** Imágenes transparentes de alta resolución de cada platillo con efecto interactivo al pasar el cursor o pulsar.
-- **Menú breve y directo:** Cuatro chimichangas visibles en una sola lista, con la recomendación de la casa destacada.
+- **Fotografías de productos:** Imágenes de chimichangas y bebidas con ficha ampliable.
+- **Menú breve y directo:** Cuatro chimichangas y cinco bebidas, con la recomendación de la casa destacada y todas las bebidas a $25 MXN.
 - **Lightbox / Ficha de Detalle:** Vista ampliada de cada platillo con descripción de ingredientes.
 - **Carrito de Pedidos en Tiempo Real:** 
   - Cálculo automático del monto a pagar.
@@ -18,7 +18,7 @@ Menú digital interactivo, minimalista y responsivo diseñado para el negocio ga
   - **🛍️ Recoger en local:** Registro rápido con nombre del cliente.
   - **🛵 Pedido a Domicilio:** Campos dedicados para *Calle, número y colonia* y *Referencias detalladas* (color de fachada, portón, negocio al lado).
 - **Generador de Mensaje a WhatsApp:** Redacta y calcula la orden lista para enviar al número del negocio (+52 1 220 634 2397).
-- **Información de servicio:** Local en Justo Sierra 22, San Francisco, Zumpango del Río, Guerrero; abierto viernes a domingo de 6:00 p. m. a 10:30 p. m. Envío a domicilio gratis a partir de 2 piezas; para 1 pieza, cuesta $25.00 en zona céntrica o $35.00 a $40.00 fuera de ella, con confirmación del costo exacto según domicilio.
+- **Información de servicio:** Local en Justo Sierra 22, San Francisco, Zumpango del Río, Guerrero; abierto viernes a domingo de 6:00 p. m. a 10:30 p. m. El envío es gratis únicamente al pedir 2 o más chimichangas; las bebidas no cuentan para alcanzar el mínimo. Con menos de 2 chimichangas, cuesta $25.00 en zona céntrica o $35.00 a $40.00 fuera de ella, con confirmación del costo exacto según domicilio.
 
 ---
 
