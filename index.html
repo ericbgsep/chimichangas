@@ -1354,7 +1354,9 @@
             { id: 'sprite', name: 'Sprite', size: '600 ml', description: 'Refresco sabor lima-limón, botella de 600 ml.', image: './assets/refres3_blanco.png', alt: 'Sprite sabor lima-limón, botella de 600 ml' },
             { id: 'mundet', name: 'Sidral Mundet', size: '600 ml', description: 'Refresco de manzana, botella de 600 ml.', image: './assets/refres4_blanco.png', alt: 'Sidral Mundet de manzana, botella de 600 ml' },
             { id: 'boing', name: 'Boing! Mango', size: '500 ml', description: 'Bebida de mango, envase de 500 ml.', image: './assets/refres5_blanco.png', alt: 'Boing! bebida de mango, envase de 500 ml' },
-            { id: 'coca-cola', name: 'Coca-Cola Original', size: 'Botella', description: 'Refresco sabor cola, botella individual.', image: './assets/refres6_blanco.png', alt: 'Coca-Cola Original en botella' }
+            { id: 'coca-cola', name: 'Coca-Cola Original', size: 'Botella', description: 'Refresco sabor cola, botella individual.', image: './assets/refres6_blanco.png', alt: 'Coca-Cola Original en botella' },
+            { id: 'agua-fresca', name: 'Agua fresca de la semana', size: '', description: 'Pregunta qué sabor hay disponible esta semana.', image: null, alt: '' },
+            { id: 'te-frutos-rojos', name: 'Té helado de frutos rojos', size: '', description: 'Bebida fría de té sabor frutos rojos.', image: null, alt: '', price: 20 }
         ];
 
         const PRODUCTS = {
@@ -1363,8 +1365,8 @@
             alambre: { name: "Chimichanga de Alambre", price: 120, kind: 'chimichanga' },
             lasana: { name: "Chimichanga de Lasaña", price: 90, kind: 'chimichanga' },
             ...Object.fromEntries(BEVERAGES.map(beverage => [beverage.id, {
-                name: `${beverage.name} ${beverage.size}`,
-                price: 25,
+                name: `${beverage.name}${beverage.size ? ` ${beverage.size}` : ''}`,
+                price: beverage.price ?? 25,
                 kind: 'bebida'
             }]))
         };
@@ -1386,16 +1388,17 @@
                 article.className = `dish-card ${theme} beverage-card`;
                 article.dataset.category = 'bebidas';
                 article.dataset.id = beverage.id;
-                article.dataset.name = `${beverage.name} ${beverage.size}`;
-                article.dataset.price = '25';
+                article.dataset.name = `${beverage.name}${beverage.size ? ` ${beverage.size}` : ''}`;
+                const price = beverage.price ?? 25;
+                article.dataset.price = String(price);
                 article.innerHTML = `
                     <div class="dish-content">
                         <div class="dish-header">
                             <h3 class="dish-title">${beverage.name}</h3>
-                            <div class="dish-price">$25.00</div>
+                            <div class="dish-price">$${price.toFixed(2)}</div>
                         </div>
                         <p class="dish-desc">${beverage.description}</p>
-                        <div class="dish-tags"><span class="tag-pill">${beverage.size}</span></div>
+                        ${beverage.size ? `<div class="dish-tags"><span class="tag-pill">${beverage.size}</span></div>` : ''}
                         <div class="dish-actions">
                             <button class="btn-add-simple" onclick="addToCart('${beverage.id}')"><span>+ Agregar</span></button>
                             <div class="qty-controls" id="qtyBox-${beverage.id}" style="display: none;">
@@ -1405,11 +1408,11 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="dish-image-wrapper" aria-label="Ampliar foto de ${beverage.name}" onclick="openLightbox('${beverage.image}', '${beverage.name}', '$25.00', '${beverage.description}', this)">
+                    ${beverage.image ? `<button type="button" class="dish-image-wrapper" aria-label="Ampliar foto de ${beverage.name}" onclick="openLightbox('${beverage.image}', '${beverage.name}', '$${price.toFixed(2)}', '${beverage.description}', this)">
                         <span class="dish-image-bg"></span>
                         <img src="${beverage.image}" alt="${beverage.alt}" class="dish-image" loading="lazy" decoding="async">
                         <span class="zoom-hint">🔍</span>
-                    </button>
+                    </button>` : ''}
                 `;
                 beverageList.appendChild(article);
             });
